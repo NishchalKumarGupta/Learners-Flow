@@ -683,6 +683,25 @@ body {
 }
 .save-btn:hover { background: var(--accent2); box-shadow: 0 0 12px rgba(0,184,122,.25); }
 
+.about-link {
+  padding: 5px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--t3);
+  font-size: 11px;
+  font-family: var(--font-head);
+  font-weight: 600;
+  letter-spacing: .3px;
+  text-decoration: none;
+  transition: all .15s;
+}
+.about-link:hover {
+  background: var(--bg3);
+  color: var(--accent);
+  border-color: var(--accent3);
+}
+
 .ide-wrap {
   display: flex;
   flex-direction: column;
