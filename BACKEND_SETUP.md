@@ -1,4 +1,4 @@
-# LearnerFlow - Complete Setup & Deployment Guide
+# Learner's Flow - Complete Setup & Deployment Guide
 
 ## ✅ What's Been Done
 
@@ -68,7 +68,7 @@ npm start      # For production
 
 You should see:
 ```
-✅ LearnerFlow Backend running at http://localhost:3000
+✅ Learner's Flow Backend running at http://localhost:3000
 📺 YouTube API configured: Yes
 ```
 

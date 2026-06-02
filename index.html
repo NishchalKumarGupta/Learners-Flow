@@ -3,48 +3,50 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>LearnerFlow — Study IDE</title>
+<title>Learner's Flow - Study IDE</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css"/>
 </head>
 <body>
 <div class="app">
-
   <header class="topbar">
     <div class="logo">
       <span class="logo-dot"></span>
-      <span class="logo-text">Learner<em>Flow</em></span>
+      <span class="logo-text">Learner's<em>Flow</em></span>
     </div>
     <div class="topbar-center">
       <span class="now-playing" id="now-playing">No video selected</span>
     </div>
     <div class="topbar-right">
+      <div class="progress-pill" id="progress-pill">0 / 0 complete</div>
       <div class="streak-pill" id="streak-pill">0 notes today</div>
-      <button class="btn-add" onclick="showModal()">＋ Add Video</button>
+      <button class="btn-add" onclick="showModal()">+ Add Video</button>
     </div>
   </header>
 
   <div class="workspace">
-
     <aside class="sidebar">
       <div class="sidebar-head">
         <span class="sidebar-label">PLAYLIST</span>
       </div>
       <div class="pl-input-wrap">
-        <input id="pl-url" class="pl-input" placeholder="Paste YouTube playlist URL…" onkeydown="if(event.key==='Enter')loadPlaylist()"/>
-        <button class="pl-load-btn" onclick="loadPlaylist()">Load ▶</button>
+        <input id="pl-url" class="pl-input" placeholder="Paste YouTube playlist URL..." onkeydown="if(event.key==='Enter')loadPlaylist()"/>
+        <button class="pl-load-btn" onclick="loadPlaylist()">Load</button>
+      </div>
+      <div class="playlist-tools">
+        <input id="playlist-search" class="pl-input search-input" placeholder="Search loaded videos..." oninput="setPlaylistSearch(this.value)"/>
       </div>
       <div class="sidebar-list" id="sidebar-list">
-        <div class="empty-hint">↑ Paste a playlist URL above<br>or click <strong>+ Add Video</strong></div>
+        <div class="empty-hint">Paste a playlist URL above<br>or click <strong>+ Add Video</strong></div>
       </div>
     </aside>
 
     <main class="main">
       <nav class="tabs">
-        <button class="tab active" onclick="switchTab('video')"><span>▶</span> Video + Notes</button>
+        <button class="tab active" onclick="switchTab('video')"><span>&#9654;</span> Video + Notes</button>
         <button class="tab" onclick="switchTab('ide')"><span>{}</span> Code IDE</button>
-        <button class="tab" onclick="switchTab('allnotes')"><span>≡</span> All Notes</button>
+        <button class="tab" onclick="switchTab('allnotes')"><span>=</span> All Notes</button>
       </nav>
 
       <div class="panel active" id="panel-video">
@@ -52,7 +54,7 @@
           <div class="video-col">
             <div class="video-box" id="video-box">
               <div class="video-placeholder">
-                <div class="vp-glyph">▶</div>
+                <div class="vp-glyph">&#9654;</div>
                 <p>Select a video from the playlist<br>or add one to get started</p>
               </div>
             </div>
@@ -60,26 +62,35 @@
               <div class="vi-title" id="vi-title"></div>
               <div class="vi-sub">YouTube</div>
             </div>
+            <section class="queue-panel" id="queue-panel">
+              <div class="queue-head">
+                <div>
+                  <div class="queue-label">COURSE QUEUE</div>
+                  <div class="queue-progress" id="queue-progress">Load a playlist to build your path</div>
+                </div>
+                <div class="queue-actions">
+                  <button class="queue-nav-btn" onclick="playPreviousVideo()">Prev</button>
+                  <button class="queue-nav-btn done" id="done-btn" onclick="toggleCurrentComplete()">Mark Done</button>
+                  <button class="queue-nav-btn primary" onclick="playNextVideo()">Next</button>
+                </div>
+              </div>
+              <div class="queue-list" id="queue-list">
+                <div class="empty-hint">Your current and upcoming videos will appear here.</div>
+              </div>
+            </section>
           </div>
+
           <div class="notes-col">
             <div class="notes-head">
               <span class="notes-label">LECTURE NOTES</span>
               <span class="note-count" id="note-count">0</span>
             </div>
-            <div class="fmt-bar">
-              <button class="fmt-btn" onclick="fmt('**','**')">B</button>
-              <button class="fmt-btn fmti" onclick="fmt('_','_')">I</button>
-              <button class="fmt-btn" onclick="fmt('\n• ','')">•</button>
-              <button class="fmt-btn" onclick="fmt('`','`')">‹›</button>
-              <button class="fmt-btn" onclick="addTimestamp()">⏱</button>
-            </div>
             <div class="notes-feed" id="notes-feed">
-              <div class="empty-hint" style="padding:20px 12px">Notes you save will appear here.<br>Press <kbd>Ctrl+Enter</kbd> to save.</div>
+              <div class="empty-hint" style="padding:20px 12px">Notes you save will appear here.<br>Press <kbd>Enter</kbd> to save, <kbd>Shift+Enter</kbd> for a new line.</div>
             </div>
             <div class="note-composer">
-              <textarea id="note-ta" class="note-ta" placeholder="Type your note…" onkeydown="if(event.ctrlKey&&event.key==='Enter')saveNote()"></textarea>
+              <textarea id="note-ta" class="note-ta" placeholder="Type your note..."></textarea>
               <div class="composer-bar">
-                <button class="ts-link" onclick="addTimestamp()">⏱ timestamp</button>
                 <button class="save-btn" onclick="saveNote()">Save Note</button>
               </div>
             </div>
@@ -97,10 +108,11 @@
             </div>
             <div class="ide-actions">
               <span class="ide-status" id="ide-status">Ready</span>
-              <button class="run-btn" id="run-btn" onclick="runCode()">▶ Run</button>
-              <button class="clr-btn" onclick="clearOutput()">✕</button>
+              <button class="run-btn" id="run-btn" onclick="runCode()">Run</button>
+              <button class="clr-btn" onclick="clearOutput()">x</button>
             </div>
           </div>
+
           <div class="ide-body">
             <div class="editor-pane">
               <div class="line-nums" id="line-nums">1</div>
@@ -113,7 +125,11 @@
                 <span class="output-lbl">OUTPUT</span>
                 <span class="output-tag" id="output-tag"></span>
               </div>
-              <div class="output-body" id="output-body">Run your code to see output here…</div>
+              <div class="stdin-panel">
+                <div class="stdin-label">INPUT</div>
+                <textarea id="stdin-ta" class="stdin-ta" placeholder="Optional input for input(), Scanner, or cin"></textarea>
+              </div>
+              <div class="output-body" id="output-body">Run your code to see output here...</div>
             </div>
           </div>
         </div>
@@ -122,11 +138,10 @@
       <div class="panel" id="panel-allnotes">
         <div class="allnotes-scroll">
           <div class="allnotes-inner" id="allnotes-inner">
-            <div class="empty-hint" id="allnotes-empty">No notes yet — start watching and taking notes!</div>
+            <div class="empty-hint" id="allnotes-empty">No notes yet - start watching and taking notes!</div>
           </div>
         </div>
       </div>
-
     </main>
   </div>
 </div>
@@ -134,16 +149,17 @@
 <div class="toast" id="toast"></div>
 <div class="modal-bg" id="modal" onclick="if(event.target===this)closeModal()">
   <div class="modal-box">
-    <div class="modal-hd">Add a Video</div>
-    <input class="pl-input" id="modal-url" placeholder="YouTube video URL…" onkeydown="if(event.key==='Enter')submitModal()"/>
-    <input class="pl-input" id="modal-title" placeholder="Custom title (optional)" onkeydown="if(event.key==='Enter')submitModal()" style="margin-top:8px"/>
+    <div class="modal-hd">Add Video or Playlist</div>
+    <input class="pl-input" id="modal-url" placeholder="YouTube video or playlist URL..." onkeydown="if(event.key==='Enter')submitModal()"/>
+    <input class="pl-input" id="modal-title" placeholder="Custom title for single video (optional)" onkeydown="if(event.key==='Enter')submitModal()" style="margin-top:8px"/>
     <div class="modal-footer">
       <button class="modal-cancel" onclick="closeModal()">Cancel</button>
-      <button class="btn-add" onclick="submitModal()">Add Video</button>
+      <button class="btn-add" onclick="submitModal()">Add</button>
     </div>
   </div>
 </div>
 
-<script src="js/app.js"></script>
+<script src="js/app.js?v=20260601-modal-playlist"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>

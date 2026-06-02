@@ -1,4 +1,4 @@
-# LearnerFlow - Study IDE with YouTube Integration
+# Learner's Flow - Study IDE with YouTube Integration
 
 A web-based IDE for learning programming with integrated YouTube playlist support, multi-language code execution, and study tracking.
 

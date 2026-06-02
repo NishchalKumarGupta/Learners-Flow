@@ -1,7 +1,7 @@
 {
   "name": "learner-flow-backend",
   "version": "1.0.0",
-  "description": "Backend for LearnerFlow Study IDE - YouTube playlist and code execution support",
+  "description": "Backend for Learner's Flow Study IDE - YouTube playlist and code execution support",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

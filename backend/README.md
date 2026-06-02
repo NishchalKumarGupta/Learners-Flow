@@ -1,7 +1,7 @@
-# LearnerFlow Backend Setup Guide
+# Learner's Flow Backend Setup Guide
 
 ## Overview
-This is the Node.js/Express backend for LearnerFlow Study IDE. It handles YouTube API integration to fetch playlists and video information.
+This is the Node.js/Express backend for Learner's Flow Study IDE. It handles YouTube API integration to fetch playlists and video information.
 
 ## Quick Start
 
