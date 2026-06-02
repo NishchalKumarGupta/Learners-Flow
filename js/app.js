@@ -13,6 +13,24 @@ let playlistSearch = '';
 let ytPlayer = null;
 let ytApiReady = false;
 
+const API_BASE = (() => {
+  const configured = window.LEARNER_FLOW_API_BASE;
+  if (typeof configured === 'string' && configured.trim()) {
+    return configured.trim().replace(/\/$/, '');
+  }
+
+  const isLocal =
+    window.location.hostname === 'localhost' ||
+    window.location.hostname === '127.0.0.1' ||
+    window.location.hostname === '';
+
+  return isLocal ? 'http://localhost:3000' : '';
+})();
+
+function apiUrl(path) {
+  return `${API_BASE}${path}`;
+}
+
 const TEMPLATES = {
   python: `# Python 3
 name = input("Name: ")
@@ -154,7 +172,7 @@ async function loadPlaylistFromUrl(url) {
 
     try {
       const r = await fetch(
-        `http://localhost:3000/api/playlist?playlistId=${encodeURIComponent(pid)}&full=true`
+        apiUrl(`/api/playlist?playlistId=${encodeURIComponent(pid)}&full=true`)
       );
       const d = await r.json();
 
@@ -188,7 +206,7 @@ async function loadPlaylistFromUrl(url) {
       toast(`Loaded ${items.length} playlist videos`);
       return true;
     } catch(e) {
-      toast('Network error', 'err');
+      toast('Could not reach the video backend', 'err');
       renderList();
       renderQueue();
       return false;
@@ -577,7 +595,7 @@ async function runCode() {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 12000);
 
-    const res = await fetch('http://localhost:3000/api/execute', {
+    const res = await fetch(apiUrl('/api/execute'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       signal: controller.signal,
@@ -627,7 +645,7 @@ async function runCode() {
 `Could not reach the code execution backend.
 
 Fix:
-  1) Make sure the backend is running on http://localhost:3000
+  1) Make sure the backend is deployed and reachable
   2) Refresh this page with Ctrl+F5
   3) Check that Python, Java, and g++ are installed for their languages.`;
     tag.textContent = 'FAILED';

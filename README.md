@@ -156,7 +156,11 @@ lsof -ti:3000 | xargs kill -9  (Mac/Linux)
 1. Create account on Heroku or Vercel
 2. Set environment variables through their dashboard
 3. Deploy your backend
-4. Update frontend API URL to your deployed backend
+4. If the frontend and backend are on different domains, set your backend URL in `js/config.js`:
+   ```js
+   window.LEARNER_FLOW_API_BASE = 'https://your-backend.example.com';
+   ```
+   If the backend serves the same domain as the frontend, leave it blank so requests use `/api/...`.
 
 ### Deploying Frontend
 - Use GitHub Pages, Netlify, or Vercel
