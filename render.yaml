@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: learners-flow
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: starter
+    envVars:
+      - key: YT_KEY
+        sync: false
