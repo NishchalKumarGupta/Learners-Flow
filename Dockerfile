@@ -10,7 +10,7 @@ RUN apt-get update \
 WORKDIR /app
 
 COPY backend/package*.json ./backend/
-RUN cd backend && npm ci --omit=dev
+RUN cd backend && npm install --omit=dev
 
 COPY . .
 
