@@ -462,6 +462,9 @@ app.post('/api/execute', async (req, res) => {
   }
 });
 
+const FRONTEND_DIR = path.join(__dirname, '..');
+app.use(express.static(FRONTEND_DIR));
+
 app.use((req, res) => {
   res.status(404).json({ error: 'Endpoint not found' });
 });
