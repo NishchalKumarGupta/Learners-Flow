@@ -109,13 +109,17 @@ function toast(msg, type) {
 }
 
 function getVideoId(url) {
-  const m = url.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/);
-  return m ? m[1] : null;
+  const value = String(url || '').trim();
+  const m = value.match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([A-Za-z0-9_-]{11})/);
+  if (m) return m[1];
+  return /^[A-Za-z0-9_-]{11}$/.test(value) ? value : null;
 }
 
 function getPlaylistId(url) {
-  const m = url.match(/[?&]list=([A-Za-z0-9_-]+)/);
-  return m ? m[1] : null;
+  const value = String(url || '').trim();
+  const m = value.match(/[?&#]list=([A-Za-z0-9_-]+)/);
+  if (m) return m[1];
+  return /^[A-Za-z0-9_-]{12,}$/.test(value) ? value : null;
 }
 
 function updateStreak() {
